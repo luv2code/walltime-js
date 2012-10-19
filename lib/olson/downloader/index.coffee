@@ -16,13 +16,14 @@ class WGetDownloader
     # Run WGet to download files from FTP
     _downloadFiles: (filePath, next) ->
 
-        log "Downloading TzDb -> wget --retr-symlinks -O '#{filePath}/tzdata-latest.tar.gz' 'ftp://ftp.iana.org/tz/tzdata-latest.tar.gz'", bold;
-        exec "wget --retr-symlinks -O '#{filePath}/tzdata-latest.tar.gz' 'ftp://ftp.iana.org/tz/tzdata-latest.tar.gz'", (err, out, stdErr) ->
+        log "Downloading TzDb -> curl -so #{filePath}/tzdata-latest.tar.gz ftp://ftp.iana.org/tz/tzdata-latest.tar.gz", bold;
+        exec "curl -so #{filePath}/tzdata-latest.tar.gz ftp://ftp.iana.org/tz/tzdata-latest.tar.gz", (err, out, stdErr) ->
             throw Error err if err
             do next
     # Inflate the downloaded data file
     _inflateFiles: (filePath, next) ->
-        exec "gzip -dc '#{filePath}/tzdata-latest.tar.gz' | tar --directory '#{filePath}' -xf -", (err, out) ->
+        #tar -zxvf backup.tar.gz
+        exec "tar -zxvf '#{filePath}/tzdata-latest.tar.gz' --directory '#{filePath}'", (err, out) ->
             throw Error err if err
             do next
     # Remove the old gzip files and other files that come with the 
