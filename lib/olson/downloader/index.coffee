@@ -22,7 +22,6 @@ class WGetDownloader
             do next
     # Inflate the downloaded data file
     _inflateFiles: (filePath, next) ->
-        #tar -zxvf backup.tar.gz
         exec "tar -zxvf '#{filePath}/tzdata-latest.tar.gz' --directory '#{filePath}'", (err, out) ->
             throw Error err if err
             do next
